@@ -182,17 +182,24 @@ def test_model_compare(train_model):
     accuracy = accuracy_score(y_test, y_pred)
 
     # 既存モデルの読みこみ
-    filename = "../models/titanic_model_2.pkl"
+    current_script_dir = os.path.dirname(os.path.abspath(__file__))
+    exercise3_dir_path = os.path.dirname(current_script_dir)
+    filename = os.path.join(exercise3_dir_path, "models", "titanic_model_2.pkl")
+
+    print(f"Attempting to load model from: {filename}") # パス確認用
+
     try:
+        # joblibで読み込む場合
         model_bef = joblib.load(filename)
-
-        print(f"{filename} からデータを読み込みました (joblib)。")
-        print(model_bef)
-
+        # pickleで読み込む場合
+        # with open(filename, 'rb') as f:
+        #     loaded_model = pickle.load(f)
+        print(f"モデル {filename} を正常に読み込みました。")
     except FileNotFoundError:
-        print(f"エラー: ファイル {filename} が見つかりません。")
+        print(f"エラー: モデルファイルが見つかりません - {filename}")
+        print(f"現在の作業ディレクトリ: {os.getcwd()}")
     except Exception as e:
-        print(f"データの読み込み中にエラーが発生しました (joblib): {e}")
+        print(f"エラー: モデルの読み込み中に問題が発生しました - {e}")
 
     y_pred_bef = model_bef.predict(X_test)
     accuracy_bef = accuracy_score(y_test, y_pred_bef)
