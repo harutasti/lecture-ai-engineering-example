@@ -12,6 +12,8 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
+import joblib
+
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
@@ -181,8 +183,16 @@ def test_model_compare(train_model):
 
     # 既存モデルの読みこみ
     filename = "../models/titanic_model_2.pkl"
-    with open(filename, "rb") as file:
-        model_bef = pickle.load(file)
+    try:
+        model_bef = joblib.load(filename)
+
+        print(f'{filename} からデータを読み込みました (joblib)。')
+        print(model_bef)
+
+    except FileNotFoundError:
+        print(f'エラー: ファイル {filename} が見つかりません。')
+    except Exception as e:
+        print(f'データの読み込み中にエラーが発生しました (joblib): {e}')
 
     y_pred_bef = model_bef.predict(X_test)
     accuracy_bef = accuracy_score(y_test, y_pred_bef)
