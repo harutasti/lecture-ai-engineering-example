@@ -180,12 +180,11 @@ def test_model_compare(train_model):
     accuracy = accuracy_score(y_test, y_pred)
 
     # 既存モデルの読みこみ
-    filename = '../models/titanic_model_2.pkl'
-    with open(filename, 'rb') as file:
+    filename = "../models/titanic_model_2.pkl"
+    with open(filename, "rb") as file:
         model_bef = pickle.load(file)
 
     y_pred_bef = model_bef.predict(X_test)
     accuracy_bef = accuracy_score(y_test, y_pred_bef)
 
-    assert accuracy<accuracy_bef, "精度が下がっています"
-
+    assert accuracy < accuracy_bef, "精度が下がっています"
