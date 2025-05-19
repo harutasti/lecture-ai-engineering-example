@@ -171,3 +171,21 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_compare(train_model):
+    model, X_test, y_test = train_model
+
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    # 既存モデルの読みこみ
+    filename = '../models/titanic_model_2.pkl'
+    with open(filename, 'rb') as file:
+        model_bef = pickle.load(file)
+
+    y_pred_bef = model_bef.predict(X_test)
+    accuracy_bef = accuracy_score(y_test, y_pred_bef)
+
+    assert accuracy<accuracy_bef, "精度が下がっています"
+
