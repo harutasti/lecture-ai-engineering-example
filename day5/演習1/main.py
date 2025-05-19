@@ -52,7 +52,8 @@ def train_and_evaluate(
     return model, accuracy
 
 
-# モデル保存
+# モデル保存   
+
 def log_model(model, accuracy, params):
     with mlflow.start_run():
         # パラメータをログ
