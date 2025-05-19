@@ -186,7 +186,7 @@ def test_model_compare(train_model):
     exercise3_dir_path = os.path.dirname(current_script_dir)
     filename = os.path.join(exercise3_dir_path, "models", "titanic_model_2.pkl")
 
-    print(f"Attempting to load model from: {filename}") # パス確認用
+    print(f"Attempting to load model from: {filename}")  # パス確認用
 
     try:
         # joblibで読み込む場合
