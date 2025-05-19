@@ -186,13 +186,13 @@ def test_model_compare(train_model):
     try:
         model_bef = joblib.load(filename)
 
-        print(f'{filename} からデータを読み込みました (joblib)。')
+        print(f"{filename} からデータを読み込みました (joblib)。")
         print(model_bef)
 
     except FileNotFoundError:
-        print(f'エラー: ファイル {filename} が見つかりません。')
+        print(f"エラー: ファイル {filename} が見つかりません。")
     except Exception as e:
-        print(f'データの読み込み中にエラーが発生しました (joblib): {e}')
+        print(f"データの読み込み中にエラーが発生しました (joblib): {e}")
 
     y_pred_bef = model_bef.predict(X_test)
     accuracy_bef = accuracy_score(y_test, y_pred_bef)
