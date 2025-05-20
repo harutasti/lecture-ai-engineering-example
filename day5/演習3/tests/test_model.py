@@ -12,6 +12,8 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 
+import joblib
+
 # テスト用データとモデルパスを定義
 DATA_PATH = os.path.join(os.path.dirname(__file__), "../data/Titanic.csv")
 MODEL_DIR = os.path.join(os.path.dirname(__file__), "../models")
@@ -171,3 +173,40 @@ def test_model_reproducibility(sample_data, preprocessor):
     assert np.array_equal(
         predictions1, predictions2
     ), "モデルの予測結果に再現性がありません"
+
+
+def test_model_compare(train_model, sample_data):
+    model, X_test, y_test = train_model
+
+    print(f"現モデルの特徴量数:{model.n_features_in_}")
+
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    # 既存モデルの読みこみ
+    current_script_dir = os.path.dirname(os.path.abspath(__file__))
+    exercise3_dir_path = os.path.dirname(current_script_dir)
+    filename = os.path.join(exercise3_dir_path, "models", "titanic_model_2.pkl")
+
+    print(f"Attempting to load model from: {filename}")  # パス確認用
+
+    try:
+        # joblibで読み込む場合
+        model_bef = joblib.load(filename)
+        # pickleで読み込む場合
+        # with open(filename, 'rb') as f:
+        #     loaded_model = pickle.load(f)
+        print(f"モデル {filename} を正常に読み込みました。")
+    except FileNotFoundError:
+        print(f"エラー: モデルファイルが見つかりません - {filename}")
+        print(f"現在の作業ディレクトリ: {os.getcwd()}")
+    except Exception as e:
+        print(f"エラー: モデルの読み込み中に問題が発生しました - {e}")
+
+    print(f"モデルのtype:{type(model_bef)}")
+    print(f"推定器の特徴量数:{model_bef.n_features_in_}")
+
+    y_pred_bef = model_bef.predict(X_test)
+    accuracy_bef = accuracy_score(y_test, y_pred_bef)
+
+    assert accuracy < accuracy_bef, "精度が下がっています"
