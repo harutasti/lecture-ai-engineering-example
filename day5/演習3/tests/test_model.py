@@ -210,5 +210,3 @@ def test_model_compare(train_model, sample_data):
     accuracy_bef = accuracy_score(y_test, y_pred_bef)
 
     assert accuracy < accuracy_bef, "精度が下がっています"
-
-
