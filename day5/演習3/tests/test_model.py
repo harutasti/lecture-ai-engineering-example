@@ -175,8 +175,10 @@ def test_model_reproducibility(sample_data, preprocessor):
     ), "モデルの予測結果に再現性がありません"
 
 
-def test_model_compare(train_model):
+def test_model_compare(train_model, sample_data):
     model, X_test, y_test = train_model
+
+    print(f"現モデルの特徴量数:{model.n_features_in_}")
 
     y_pred = model.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
@@ -201,7 +203,12 @@ def test_model_compare(train_model):
     except Exception as e:
         print(f"エラー: モデルの読み込み中に問題が発生しました - {e}")
 
+    print(f"モデルのtype:{type(model_bef)}")
+    print(f"推定器の特徴量数:{model_bef.n_features_in_}")
+
     y_pred_bef = model_bef.predict(X_test)
     accuracy_bef = accuracy_score(y_test, y_pred_bef)
 
     assert accuracy < accuracy_bef, "精度が下がっています"
+
+
